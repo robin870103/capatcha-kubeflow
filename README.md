@@ -1,2 +1,2 @@
 # capatcha-kubeflow
-operate the capatcha recognition in kubeflow framework
+operate the captcha recognition in kubeflow framework
