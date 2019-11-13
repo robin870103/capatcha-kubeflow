@@ -1,0 +1,29 @@
+apiVersion: "kubeflow.org/v1"
+kind: "TFJob"
+metadata:
+  name: "captcha"
+  namespace: lsf
+spec:
+  cleanPodPolicy: None
+  tfReplicaSpecs:
+    Worker:
+      replicas: 1
+      restartPolicy: Never
+      template:
+        spec:
+          containers:
+            - name: tensorflow
+              image: robin1987/shunfeng:tf-captcha-v12.0
+              command:
+                - "python"
+                - "/var/tf_captcha/dist-captcha.py"
+                - "--rnn_size=128"
+                - "--data_dir=/train/traindata/"
+                - "--save_model_path=/train/model/best.h5"
+              volumeMounts:
+                - mountPath: "/train"
+                  name: "training"
+          volumes:
+            - name: "training"
+              persistentVolumeClaim:
+                claimName: "captcha-volume"
